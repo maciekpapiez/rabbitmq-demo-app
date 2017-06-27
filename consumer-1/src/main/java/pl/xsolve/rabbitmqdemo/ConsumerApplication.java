@@ -3,13 +3,14 @@ package pl.xsolve.rabbitmqdemo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import pl.xsolve.rabbitmqdemo.dto.MessageListener;
 import pl.xsolve.rabbitmqdemo.dto.QueueDictionary;
 
 @EnableRabbit
@@ -38,14 +39,19 @@ public class ConsumerApplication {
     }
 
     @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(final ConnectionFactory connectionFactory,
-                                                                               final Jackson2JsonMessageConverter jackson2JsonMessageConverter) {
-        SimpleRabbitListenerContainerFactory listenerContainerFactory = new SimpleRabbitListenerContainerFactory();
+    public SimpleMessageListenerContainer simpleMessageListenerContainer(final ConnectionFactory connectionFactory,
+                                                                         final MessageListener messageConsumer,
+                                                                         final Queue contentQueue,
+                                                                         final Jackson2JsonMessageConverter jackson2JsonMessageConverter) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 
-        listenerContainerFactory.setConnectionFactory(connectionFactory);
-        listenerContainerFactory.setMessageConverter(jackson2JsonMessageConverter);
+        container.setConnectionFactory(connectionFactory);
 
-        return listenerContainerFactory;
+        // we're setting here what was set previously using annotations
+        container.setQueues(contentQueue);
+        container.setMessageListener(new MessageListenerAdapter(messageConsumer, jackson2JsonMessageConverter));
+
+        return container;
     }
 
     @Bean
