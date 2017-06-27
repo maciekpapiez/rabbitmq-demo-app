@@ -16,10 +16,6 @@ dependencies {
 
 	compile project(':commons')
 
-	compile('com.github.javafaker:javafaker:0.2') {
-		exclude group: 'org.slf4j'
-	}
-
 	compile('org.springframework.boot:spring-boot-starter-amqp')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
