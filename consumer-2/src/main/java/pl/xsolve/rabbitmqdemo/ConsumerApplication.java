@@ -17,7 +17,7 @@ public class ConsumerApplication {
 
     @Bean
     public Exchange exchange() {
-        return new DirectExchange(QueueDictionary.EXCHANGE_NAME);
+        return new FanoutExchange(QueueDictionary.EXCHANGE_NAME);
     }
 
     @Bean
@@ -26,11 +26,10 @@ public class ConsumerApplication {
     }
 
     @Bean
-    public Binding binding(final Queue queue, final DirectExchange exchange) {
+    public Binding binding(final Queue queue, final FanoutExchange exchange) {
         return BindingBuilder
                 .bind(queue)
-                .to(exchange)
-                .with(QueueDictionary.ROUTING_KEY_2);
+                .to(exchange);
     }
 
 }

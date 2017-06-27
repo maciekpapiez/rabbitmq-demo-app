@@ -1,6 +1,6 @@
 package pl.xsolve.rabbitmqdemo;
 
-import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +19,7 @@ public class ProducerApplication {
 
 	@Bean
 	public Exchange exchange() {
-		return new DirectExchange(QueueDictionary.EXCHANGE_NAME);
+		return new FanoutExchange(QueueDictionary.EXCHANGE_NAME);
 	}
 
 }

@@ -20,7 +20,7 @@ public class MessageSender {
     public void sendMessage() {
         final Message message = generator.generate();
 
-        rabbitTemplate.convertAndSend(QueueDictionary.EXCHANGE_NAME, QueueDictionary.ROUTING_KEY, message);
+        rabbitTemplate.convertAndSend(QueueDictionary.EXCHANGE_NAME, QueueDictionary.ROUTING_KEY_1, message);
 
         log.info(message.getName() + " sent message ID " + message.getId() + ".");
     }
