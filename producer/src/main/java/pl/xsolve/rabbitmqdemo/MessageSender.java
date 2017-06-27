@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pl.xsolve.rabbitmqdemo.dto.Message;
+import pl.xsolve.rabbitmqdemo.dto.QueueDictionary;
 
 @Service
 @AllArgsConstructor
@@ -15,11 +16,12 @@ public class MessageSender {
     private final MessageGenerator generator;
     private final RabbitTemplate rabbitTemplate;
 
-    @Scheduled(initialDelay = 3000L, fixedDelay = 500L)
+    @Scheduled(fixedDelay = 500L)
     public void sendMessage() {
         final Message message = generator.generate();
 
-        rabbitTemplate.convertAndSend(message);
-        log.info("Message with ID " + message.getId() + " has been sent.");
+        rabbitTemplate.convertAndSend(QueueDictionary.EXCHANGE_NAME, QueueDictionary.ROUTING_KEY, message);
+
+        log.info(message.getName() + " sent message ID " + message.getId() + ".");
     }
 }

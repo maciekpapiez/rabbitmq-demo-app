@@ -1,3 +1,4 @@
 include 'commons'
-include 'consumer'
+include 'consumer-1'
+include 'consumer-2'
 include 'producer'
