@@ -1,0 +1,18 @@
+what is RabbitMQ?
+
+how RabbitMQ was used in the project when I joined?
+how did the inter-component communication look like at that time (HTTP, unreliable)
+
+publish to exchange, consume from a queue
+exchange types - direct, fanout (broadcast), headers, topic
+
+showcase:
+1) work-queue
+2) fanout-exchange
+3) json-content-type
+4) message adapter
+
+strong persistence guarantee
+dead letter queue
+
+Apache Camel
